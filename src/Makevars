@@ -1,0 +1,22 @@
+SWIFTC = /usr/bin/swiftc
+INSTALL_NAME_TOOL = /usr/bin/install_name_tool
+SWIFTLIB = libswiftspeech.dylib
+LIBDIR = ../inst/lib
+DEVLIB = ../lib
+PKG_LIBS = -lswiftspeech -L../inst/lib
+
+all:	$(SHLIB) swiftLibrary
+
+swiftLibrary: $(SWIFTLIB)
+	-@if test ! -e $(LIBDIR); then mkdir -p $(LIBDIR); fi
+	-@if test ! -e $(DEVLIB); then mkdir -p $(DEVLIB); fi
+	cp $(SWIFTLIB) $(LIBDIR)
+	cp $(SWIFTLIB) $(DEVLIB)
+
+$(SWIFTLIB): $(OBJECTS)
+	$(SHLIB_CXXLD) -o $(SWIFTLIB) $^ $(SHLIB_CXXLDFLAGS) $(LDFLAGS) $(ALL_LIBS)
+	$(SWIFTC) -I /Library/Frameworks/R.framework/Headers -F/Library/Frameworks -framework R -framework CoreML -framework NaturalLanguage -import-objc-header swiftspeech.h -emit-library swiftspeech.swift
+	$(INSTALL_NAME_TOOL) -change $(SWIFTLIB) @loader_path/../lib/$(SWIFTLIB) swiftspeech.so
+
+clean:
+	rm -Rf $(SHLIB) $(SWIFTLIB) $(OBJECTS) $(DEVLIB)/$(SWIFTLIB)

@@ -4,9 +4,9 @@
 \name{swiftspeech}
 \alias{swiftspeech}
 \alias{swiftspeech-package}
-\title{...}
+\title{Classify Parts of Speech Using Apple's CoreML and NaturalLanguage Libraries}
 \description{
-A good description goes here otherwise CRAN checks fail.
+Classify Parts of Speech Using Apple's CoreML and NaturalLanguage Libraries.
 }
 \seealso{
 Useful links:
