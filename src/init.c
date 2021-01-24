@@ -3,9 +3,6 @@
 #include <stdlib.h> // for NULL
 #include <R_ext/Rdynload.h>
 
-/* .Call calls */
-extern SEXP hey();
-extern SEXP plus_one(SEXP);
 extern SEXP part_of_speech(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
