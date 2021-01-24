@@ -5,7 +5,7 @@ LIBDIR = ../inst/lib
 DEVLIB = ../lib
 PKG_LIBS = -lswiftspeech -L../inst/lib
 
-all:	$(SHLIB) swiftLibrary
+all:  $(SHLIB) swiftLibrary
 
 swiftLibrary: $(SWIFTLIB)
 	-@if test ! -e $(LIBDIR); then mkdir -p $(LIBDIR); fi

@@ -9,8 +9,6 @@ extern SEXP plus_one(SEXP);
 extern SEXP part_of_speech(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-  {"hey",            (DL_FUNC) &hey,            0},
-  {"plus_one",       (DL_FUNC) &plus_one,       1},
   {"part_of_speech", (DL_FUNC) &part_of_speech, 1},
   {NULL, NULL, 0}
 };
