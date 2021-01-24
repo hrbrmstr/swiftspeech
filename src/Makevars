@@ -2,7 +2,7 @@ SWIFTC = /usr/bin/swiftc
 INSTALL_NAME_TOOL = /usr/bin/install_name_tool
 SWIFTLIB = libswiftspeech.dylib
 LIBDIR = ../inst/lib
-DEVLIB = ../lib
+DEVLIBDIR = ../lib
 REQUIRED_ARGS = -I /Library/Frameworks/R.framework/Headers -F/Library/Frameworks -framework R -emit-library
 # add any additional frameworks being used here
 EXTRA_FRAMEWORKS = -framework CoreML -framework NaturalLanguage
@@ -14,19 +14,26 @@ BRIDGING_HEADER = -import-objc-header swiftspeech.h
 PKG_DYNLIB = swiftspeech.so
 # linker glue
 PKG_LIBS = -lswiftspeech -L../inst/lib
+SOURCES = init.c
+OBJECTS = init.o
 
-all:  $(SHLIB) swiftLibrary
+all:  glue $(SHLIB) swiftLibrary
+
+glue:
+  # this makes the R registration code/init.c
+	Rscript -e "swiftr::add_registration_glue()"
 
 swiftLibrary: $(SWIFTLIB)
 	# this is where the dylib will go for pkg installation
 	-@if test ! -e $(LIBDIR); then mkdir -p $(LIBDIR); fi
 	cp $(SWIFTLIB) $(LIBDIR)
-	# this is where the dylib will go during development
-	-@if test ! -e $(DEVLIB); then mkdir -p $(DEVLIB); fi
-	cp $(SWIFTLIB) $(DEVLIB)
+	# this is where the dylib will go during development b/c "@loader_path"
+	-@if test ! -e $(DEVLIBDIR); then mkdir -p $(DEVLIBDIR); fi
+	cp $(SWIFTLIB) $(DEVLIBDIR)
+
 
 $(SWIFTLIB): $(OBJECTS)
-	# comnpile packate "glue"
+	# compile packate "glue"
 	$(SHLIB_CXXLD) -o $(SWIFTLIB) $^ $(SHLIB_CXXLDFLAGS) $(LDFLAGS) $(ALL_LIBS)
 	# compile swift compoonents
 	$(SWIFTC) $(REQUIRED_ARGS) $(BRIDGING_HEADER) $(EXTRA_FRAMEWORKS) $(SWIFT_SRC)

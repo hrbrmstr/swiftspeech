@@ -16,7 +16,8 @@ License: MIT + file LICENSE
 Suggests: 
     covr, tinytest
 Depends: 
-    R (>= 3.6.0)
+    R (>= 3.6.0),
+    swiftr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 RequiresCompilation: yes
